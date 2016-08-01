@@ -6,6 +6,7 @@
 * Work out the best settings for any individual
 * Remember and recognise a user, storing their preferences
 
+
 ## Potential Strategies
 
 ### Automatically toast bread
@@ -54,3 +55,13 @@ Persistant settings will be implemented initially. If machine learning is feasib
 * User's phone
 
 Using a user's phone will give the most control over the interface and requires no additional hardware, as every user would likely be in possession of a smartphone. Potentially we could add a simple fallback system.
+
+
+## Gluing it all together
+
+* Raspberry Pi
+  * Host a basic web interface
+  * Send commands to the Arduino
+* Arduino
+  * Receive commands from the Raspberry Pi
+  * Control the motors
