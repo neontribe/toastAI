@@ -1,6 +1,6 @@
 # toastAI
 
-**TOAST (The Over-engineeed AI Super Toaster** aims to:
+**TOAST (The Over-engineeed AI Super Toaster)** aims to:
 
 * Automatically toast bread
 * Work out the best settings for any individual
