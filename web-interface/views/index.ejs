@@ -1,12 +1,67 @@
 <html>
   <head>
     <title>My Angular App!</title>
+    <script
+        src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.js"> </script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.css">
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
     <script src="javascripts/angularApp.js"></script>
   </head>
-  <body ng-app="flapperNews" ng-controller="MainCtrl">
-    <div>
-      {{test}}
+  <body>
+    <div class="ui sidebar inverted vertical menu blue">
+      <a class="item">
+        Login/User
+      </a>
+      <a class="item">
+        View Toast
+      </a>
+      <a class="item">
+        About us/ Contact Us
+      </a>
     </div>
+    <div class="pusher">
+    <div class="ui secondary  blue inverted menu">
+  <a class="icon item" onclick="togglesidebar()">
+    <i class="ui content icon" >  </i> 
+  </a>
+</div>
+      <div class="ui centered container">
+      <img src="http://kitchen-electronics.weebly.com/uploads/2/7/1/1/27118291/6608936_orig.jpg" class="ui centered circular image">
+      <h2 class="ui centered header">
+  
+  T.O.A.S.T. AI
+</h2>
+        <p class="ui makecentered">Hello and welcome to T.O.A.S.T. AI (The Overengineered AI Super Toaster)</p>
+        <div style="margin:auto; text-align:center">
+          <div class="ui extra huge button circular red makecentered toastbutton" style=""> Start </div> 
+        </div>
+        
+      </div>
+    </div>f
   </body>
+  <script>
+  function togglesidebar() {
+$(".ui.sidebar").sidebar("toggle")
+  }
+</script>
+<style>
+.header {
+  text-align:center
+}
+.makecentered {
+  text-align:center;
+  margin:auto
+}
+
+.toastbutton {
+  margin:10px !important
+}
+body {
+  background-color: #E9ECED;
+}
 </html>
+
+
