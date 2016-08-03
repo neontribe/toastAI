@@ -1,0 +1,26 @@
+{
+  "name": "glue",
+  "version": "1.0.0",
+  "description": "Receives and interprets commands from the web interface and translates them to the Arduino",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neontribe/toastAI.git"
+  },
+  "keywords": [
+    "toast"
+  ],
+  "author": "neontribe",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/neontribe/toastAI/issues"
+  },
+  "homepage": "https://github.com/neontribe/toastAI#readme",
+  "dependencies": {
+    "serialport": "^4.0.1",
+    "socket.io-client": "^1.4.8"
+  }
+}
