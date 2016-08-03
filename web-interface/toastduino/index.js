@@ -12,7 +12,7 @@ io.on('connection', function (socket) {
 
 	var i = 1;
 	setInterval(function () {
-		socket.emit('setAngle', { 'angle': i })
+		socket.emit('setAngle', { 'angle': i });
 		i += 40;
 		i = i % 180;
 	}, 3000);

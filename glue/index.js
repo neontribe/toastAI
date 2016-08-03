@@ -26,11 +26,4 @@ toastduinoLib.findArduino(function (error, arduino) {
 		console.log(error);
 		serverSocket.emit('toastduinoError', { 'name': error.name, 'message': error.message });
 	});                                      																	
-
-	var i = 1;
-	setInterval(function () {
-		toastduino.setAngle(i);
-		i += 40;
-		i = i % 180;
-	}, 3000);
 });
