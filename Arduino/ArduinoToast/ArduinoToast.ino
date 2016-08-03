@@ -22,19 +22,9 @@ int SettingsInt = 0 ;
 
 void setup() {
   Settings.attach(9);  // attaches the servo on pin 9 to the servo object
-  Serial.begin(9600);
-  while (true){
-     int Ready = Serial.parseInt(); 
-     if(Ready == 1){
-      break;
-      }
-  
-     }
- Serial.println(2);   
-    
-  
-  
-  
+  Lever.attach(4);
+  Lever.write(0);
+  Serial.begin(9600); 
 }
 
 void loop() {
@@ -46,8 +36,12 @@ void loop() {
     }else{
       Settings.write(SettingsInt);
       Serial.println(SettingsInt); 
+      delay(1000);
     }
-    
+    Lever.write(90);
+    delay(1000);
+    Lever.write(0);
+    delay(1000);
         
    }
 
