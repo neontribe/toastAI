@@ -1,3 +1,3 @@
 exports.getServerSocket = function () {
-	return require('socket.io-client')(process.env.SOCKET_HOST || 'http://toastai.tech:1337');
+	return require('socket.io-client')(process.env.SOCKET_HOST || 'http://localhost:1337');
 } 

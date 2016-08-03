@@ -2,6 +2,11 @@ var io = require('socket.io')(process.env.SOCKET_PORT || 1337);
 
 // TODO: hook and log any errors
 
+// TODO: make it this easy
+// toastduinoLib.getToastduinos() -> list of Toastduino
+// Toastduino.getStatus() -> String, "Ready" or last error message
+// Toastduino.setAngle(int angle) -> null, sets the angle of the toaster remotely
+
 io.on('connection', function (socket) {
 	socket.on('error', function (data) {
 		var name = data.name;
