@@ -24,7 +24,8 @@ void setup() {
   Settings.attach(9);  // attaches the servo on pin 9 to the servo object
   Lever.attach(4);
   Lever.write(0);
-  Serial.begin(9600); 
+  Serial.begin(9600);
+  Serial.println("READY");
 }
 
 void loop() {
