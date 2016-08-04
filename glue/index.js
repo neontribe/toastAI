@@ -1,48 +1,38 @@
-var SerialPort = require('serialport');
+var toastduinoLib = require('./lib/toastduino');
+var server = require('./lib/server');
+var Toastduino = toastduinoLib.Toastduino;
 
-// scout for the Arduino
-SerialPort.list(function (err, ports) {
-	if (err) {
-		console.log(err);
+// TODO: add proper logging
+// TODO: hook connect/disconnect/reconnect events
+// TODO: let the web server know when the toast request is at the front of the queue
+
+// initialise arduino connection
+toastduinoLib.findArduino(function (error, arduino) {
+	if (error) {
+		console.log('An error occurred: ' + error);
 		return;
 	}
 
-	if (ports.length == 0) {
-		console.log(new Error('No serial ports detected'));
-		return;
-	}
+	// wrap it in a Toastduino object
+	var toastduino = new Toastduino(arduino);
 
-	// choose what is hopefully the Arduino
-	var portInfo = ports[0];
+	// initialise server connection
+	var serverSocket = server.getServerSocket();
 
-	console.log('Found Arduino at ' + portInfo.comName);
-
-	// make a SerialPort object from the comName from the found port
-	var port = new SerialPort(portInfo.comName, { autoOpen: false });
-
-	port.on('open', function (error) {
-		if (error) {
-			console.log('Couldn\'t connect to Arduino');
-			console.log(error);
-			return;
-		}
-
-		console.log('Connected to Arduino');
-
-		setInterval(function () {
-			var degrees = Math.floor(Math.random() * 180) + 1;
-			console.log('Telling Arduino to move to ' + degrees + ' degrees');
-			port.write(degrees.toString(), function (err) {
-				if (err) {
-					console.log('Error sending data to the Arduino');
-					console.log(err);
-					return;
-				}
-
-				console.log('Successfully sent data to the Arduino');
-			})
-		}, 5000);
+	// when we get a request to toast, toast
+	serverSocket.on('toast', function (data) {
+		var seconds = data.seconds;
+		toastduino.toast(seconds);
 	});
 
-	port.open();
+	// pass errors to the web server
+	toastduino.on('error', function (error) {
+		console.log(error);
+		serverSocket.emit('toastduinoError', { 'name': error.name, 'message': error.message });
+	});
+
+	// let the web server know when the Toastduino is ready to toast
+	toastduino.on('ready', function () {
+		serverSocket.emit('ready');
+	});
 });
