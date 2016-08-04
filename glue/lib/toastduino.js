@@ -38,10 +38,10 @@ function Toastduino(serialPort, options) {
 
 	options = options || {};
 
-	this.minSeconds = options.minSeconds || 60;
-	this.maxSeconds = options.maxSeconds || 300;
+	this.minSeconds = options.minSeconds || 60; // minimum seconds we can configure to toast for
+	this.maxSeconds = options.maxSeconds || 300; // maximum seconds we can configure to toast for
 
-	this.serialPort = serialPort;
+	this.serialPort = serialPort; // the serial port to communicate over
 	this.readyTimeoutId = null; // id of a function scheduled to run when toasting is finished
 	this.opened = false; // whether we are connected via serial port
 	this.toConfirm = null; // last angle requested, yet to be moved to
@@ -49,8 +49,9 @@ function Toastduino(serialPort, options) {
 	this.toastQueue = []; // angles to move to when ready/moved to last angle
 	this.handshaked = false; // whether a handshake over serial port has yet occured
 
+	// open a serial connection
 	this.serialPort.open(this._opened.bind(this));
-	this.serialPort.on('data', this._data.bind(this));
+	this.serialPort.on('data', this._data.bind(this)); // read data from it
 
 	// TODO: catch errors & disconnect
 }
@@ -107,21 +108,31 @@ Toastduino.prototype._sendNext = function () {
 	var toastRequest = this.toastQueue[0];
 	var message = toastRequest.degrees.toString();
 
-	this.toConfirm = message;
-	this.toasting = true;
+	this.toConfirm = message; // wait for echo response before taking further action
+	this.toasting = true; // set the status as "toasting" until further information
 	this.toastQueue.splice(0, 1); // remove 1 element at index 0
-	this.serialPort.write(message, this._written.bind(this));
+	this.serialPort.write(message, this._written.bind(this)); // send
 
 	// let us know when we can toast again, with a little added safety
 	this.readyTimeoutId = setTimeout(this._ready.bind(this), (toastRequest.seconds + 30) * 1000);
 }
 
+/*
+Called when the toaster is ready to toast again.
+
+This is usually after:
+* Completion of toasting (deduced from time)
+* Failure of toasting (deduced from an invalid response)
+*/
 Toastduino.prototype._ready = function () {
 	this.emit('ready');
 	this.toasting = false;
-	this._sendNext();
+	this._sendNext(); // send the next thing in the queue, if present
 }
 
+/*
+Wrapper to check that our data has been written happily.
+*/
 Toastduino.prototype._written = function (error) {
 	if (error) {
 		this._error(error);
@@ -130,27 +141,35 @@ Toastduino.prototype._written = function (error) {
 	}
 }
 
+/*
+Handles lines of data read from the serial connection.
+*/
 Toastduino.prototype._data = function (buffer) {
 	buffer = buffer.trim(); // without this buffer has a trailing new-line character
 
 	this.emit('data', buffer);
 
-	if (buffer == 'READY') {
+	// is this an initial handshake
+	if (buffer == 'READY' && !this.handshaked) {
 		this.handshaked = true;
 		this.emit('handshaked');
-		this._sendNext();
+		this._sendNext(); // we're ready to send
 		return;
 	}
 
+	// an echo response indicates the Toastduino is functioning correctly
 	if (buffer == this.toConfirm) {
 		// the Toastduino has understood our request
 		this.toConfirm = null;
 	} else {
-		// weird response; perhaps angle setting failed?
-		this._error(new Error('Angle setting failed, response: ' + buffer));
+		// weird response; perhaps toasting failed?
+		this._error(new Error('Toasting failed, response: ' + buffer));
 	}
 }
 
+/*
+Called if there is any sort of error anywhere in Toastduino.
+*/
 Toastduino.prototype._error = function (error) {
 	this.emit('error', error);
 
