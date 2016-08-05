@@ -25,6 +25,10 @@ toastduinoLib.findArduino(function (error, arduino) {
 		toastduino.toast(seconds);
 	});
 
+	toastduino.on('handshaked', function () {
+		console.log('Connected and handshaked with the Arduino');
+	});
+
 	// pass errors to the web server
 	toastduino.on('error', function (error) {
 		console.log(error);

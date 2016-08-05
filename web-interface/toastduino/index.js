@@ -23,6 +23,17 @@ function Toastduino(socket) {
 	// we're assuming that we're ready when we start a connection
 	// TODO: consider glue sending a 'ready' event on initial connection
 	this.ready = true;
+	/*redy = true;
+	Object.defineProperty(this, 'ready', {
+		get: function() {
+			debugger;
+			return redy;
+		},
+		set: function(v) {
+			debugger;
+			redy = v;
+		} 
+	});*/
 	this.toastingError = null;
 
 	this.socket.on('ready', this._ready.bind(this));
@@ -66,7 +77,7 @@ Toastduino.prototype.toast = function (seconds) {
 	if (!this.isReady()) {
 		throw Error('Not ready to toast');
 	}
-
+debugger;
 	this.ready = false; // we're not ready to toast again until notified
 	this.toastingError = null; // no error has been encountered with this request yet
 	this.socket.emit('toast', { 'seconds': seconds }); // send the request
@@ -102,10 +113,6 @@ io.on('connection', function (socket) {
 	// wrap it with a Toastduino class
 	var toastduino = new Toastduino(socket);
 	toastduinos.push(toastduino);
-
-	// below command is for testing
-	// TODO: remove when in actual usage
-	toastduino.toast(240);
 
 	socket.on('disconnect', function () {
 		var oldToastduinos = toastduinos.slice(); // clone
