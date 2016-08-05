@@ -25,7 +25,7 @@ function($scope, User, Toast, Toaster, $location){
   		console.log(minutesFromNow)
   		 var started = false
   		 var startSeconds
-  		 	
+  		 Toaster.toast(minutes * 60)	
   		$("#clock")
 	       .countdown(minutesFromNow, function(event) {
 	         $(this).text(
@@ -34,14 +34,14 @@ function($scope, User, Toast, Toaster, $location){
 	         // var secondsRemaining=event.strftime("%S")
 	         // var minutesRemaining=event.strftime("%M")
 	         // var totalRemaining=minutesRemaining*60+secondsRemaining
-
+	         
 
 
 	     }).on('finish.countdown', function(event) {
 		  $(this).html('Your toast is ready!')
-		  Toaster.toast(minutes * 60).then(function() {
+		  
 		  	window.location.replace("/rate#?toastiness=" + minutes + "&user=" + $location.search().user);
-		  })
+		  
 		  
 		  
 
