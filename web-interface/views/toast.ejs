@@ -43,11 +43,11 @@
           {{currentUser.name}}'s toast!
         </div>
         <div style="text-align:center; margin:auto">
-          <div class="ui segment">
+          <div class="ui segment" ng-init="getReccomendedTime()">
             <div class="ui large header"> Recommended </div>
             <p> Based on your previous toast, we recommend this:</p>
              <img style="margin:auto" class="ui image" src="/Toasts/level3.jpg">
-             <div class="ui toastbutton button" ng-click="startToasting(); startTimer(0.1)"> Make Toast</div> 
+             <div class="ui toastbutton button" ng-click="sendToast(recoomendedTime)"> Make Toast</div>
         </div>
         <div class="ui divider"> </div> 
         <div class="ui six column grid" >

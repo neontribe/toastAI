@@ -2,8 +2,8 @@ var app = angular.module('ToastAI', []);
 
 app
 .controller('MainCtrl', [
-'$scope', 'User', 'Toast', '$location',
-function($scope, User, Toast, $location){
+'$scope', 'User', 'Toast', 'Toaster', '$location',
+function($scope, User, Toast, Toaster, $location){
   $scope.test = 'Hello world!';
   $scope.togglePasswordShow = function (){
   	$scope.passwordShowing = !$scope.passwordShowing
@@ -39,7 +39,10 @@ function($scope, User, Toast, $location){
 
 	     }).on('finish.countdown', function(event) {
 		  $(this).html('Your toast is ready!')
-		  window.location.replace("/rate#?toastiness=" + minutes + "&user=" + $location.search().user);
+		  Toaster.toast(minutes * 60).then(function() {
+		  	window.location.replace("/rate#?toastiness=" + minutes + "&user=" + $location.search().user);
+		  })
+		  
 		  
 
 		});
@@ -104,6 +107,21 @@ function($scope, User, Toast, $location){
 	  	})
 	  }
 
+	  //Toasters
+	  $scope.getToasters = function() {
+	  	console.log(Toaster.getAll())
+	  	Toaster.getAll().then(function(response) {
+	  		$scope.toasters = response.data
+	  	})
+	  }
+	  $scope.getReccomendedTime = function() {
+	  	console.log("A PROMISE?", Toaster.recommendedToastTime())
+	  	Toaster.recommendedToastTime(function(response) {
+	  		console.log("DHWAIUYDIUWANDIUWANYDUIWANDYIUAWDUI", response)
+	  		$scope.recoomendedTime = response.data.time / 60;
+	  	})
+	  }
+
 
 
   function addMinutes(date, minutes) {
@@ -149,10 +167,33 @@ function($scope, User, Toast, $location){
 		}
 	}
 }])
-.factory('Rating', ['$http', function($http) {
+.factory('Toaster', ['$http','Toast', function($http, Toast) {
 	return {
-		create: function(toast) {
+		getAll: function() {
+			return $http.get('/api/toasters')
+		},
+		toast: function(seconds) {
+			return $http.get('/api/toast', {
+				"seconds": seconds
+			})
+		},
+		recommendedToastTime: function(cally) {
+			var toasts = []
+			Toast.getAll().then(function(response) {
+				console.log(response.data)
+				for(var x in response.data) {
+					var y = response.data[x]
+					console.log("should push", y)
+					toasts.push(y)
+				}
+				console.log(toasts)
+				$http.post("/api/recommended_toast", toasts).then(cally);
+				
+			})
+			
 
+			// Toast.getAll().then(function(response) {toasts  = response})
+			
 		}
 	}
 }]);

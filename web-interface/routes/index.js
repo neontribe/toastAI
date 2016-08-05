@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var toastduinoLib = require('../toastduino');
-
+var recommendedToast = require('../predictive-toast')
 
 
 /* GET home page. */
@@ -49,5 +49,15 @@ router.get('/api/toasters', function(req, res, next) {
   }
   res.json(jsonResponse);
 });
+
+router.post('/api/recommended_toast', function(req, res, next) {
+	var toasts = req.body.toasts
+
+	var time = recommendedToast.predictTime(toasts)
+	res.json({
+		"time": time
+	})
+})
+
 module.exports = router;
 

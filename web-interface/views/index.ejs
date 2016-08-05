@@ -17,7 +17,7 @@
         
     
   </head>
-  <body>
+  <body  ng-app="ToastAI" ng-controller="MainCtrl">
     <div class="ui sidebar inverted vertical menu blue">
       <a class="item">
         Login/User
@@ -48,9 +48,27 @@
   T.O.A.S.T. AI 
 </h2>
         <p class="ui makecentered">Hello and welcome to T.O.A.S.T. AI (The Overengineered AI Super Toaster)</p>
-        <div style="margin:auto; text-align:center">
-          <a href="/signin" class="ui extra huge button circular red makecentered toastbutton" style=""> Start </a> 
+        <div style="margin:auto; text-align:center"  ng-init="getToasters()">
+          <a href="/signin" class="ui extra huge button circular red makecentered toastbutton" ng-if="toasters.length > 0 && toasters[0].ready" style=""> Start </a> 
+          <div class="ui red message" ng-if="toasters.length == 0">
+              No toasters!
+            </div>
+            <div class="ui red message" ng-if="!toasters[0].ready && toasters.length > 0">
+              Toaster not ready to toast
+            </div>
+          <div class="ui segment" ng-if="toasters.length > 0">
+            <ul style="list-style: none;" ng-if="toasters.length > 0">
+              <li ng-repeat="toaster in toasters">
+                Toaster #{{$index +1}}
+                <p>Status: {{toaster.status}}</p>
+                <p><strong>Ready: {{toaster.ready}}</strong></p>
+                <div class="ui divider"></div>
+              </li>
+            </ul>
+            
+          </div>
         </div>
+
         
       </div>
     </div>
