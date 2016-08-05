@@ -46,6 +46,7 @@ if (app.get('env') === 'development') {
   });
 }
 
+
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
@@ -56,5 +57,27 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// var monk = require('monk')
+
+// // Connection URL
+// var url = 'localhost:27017/test'; // Connection URL
+// var db = require('monk')(url);
+
+// var collection = db.get('ayyy')
+
+// collection.insert([{a: 1}, {a: 2}, {a: 3}])
+//   .then(function(docs) {
+//     // Inserted 3 documents into the document collection
+//   })
+//   .then(function() {
+
+//     return collection.update({ a: 2 }, { $set: { b: 1 } })
+
+//   })
+//   .then(function(result) {
+//     // Updated the document with the field a equal to 2
+//     return collection.find().then(function(x) { console.log(x ) })
+//   })
+//   .then(() => db.close())
 
 module.exports = app;

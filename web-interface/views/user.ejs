@@ -13,10 +13,10 @@
   </head>
   <body ng-app="ToastAI" ng-controller="MainCtrl">
     <div class="ui sidebar inverted vertical menu blue">
-      <a class="item">
-        Login/User
+      <a class="item" href="/signin">
+        Login/User 
       </a>
-      <a class="item">
+      <a class="item" href="/toast/view">
         View Toast
       </a>
       <a class="item">
@@ -39,8 +39,8 @@
         <a>Sign in </a> / <a> Sign up </a>
         <form class="ui form">
   <div class="field">
-    <label>Email</label>
-    <input type="text" name="Email" placeholder="Email">
+    <label>name</label>
+    <input type="text" name="name" placeholder="name" ng-model="user.name">
   </div>
   <div class="field" ng-click="togglePasswordShow()">
     <div class="ui checkbox">
@@ -50,28 +50,16 @@
   </div>
   <div class="field" ng-if="passwordShowing">
     <label>Password</label>
-    <input type="password" name="Password" placeholder="Password">
+    <input type="password" name="Password" placeholder="Password" ng-model="user.password">
   </div>
   
-  <button class="ui button" type="submit">Submit</button>
+  <button class="ui button" type="submit" ng-click="createUser()">Submit</button>
 </form>
 <div class="ui divider"></div>
 <div class="ui segments">
-  <div class="ui inverted pink segment">
-    <p>Sarah</p>
-  </div>
-  <div class="ui inverted red segment">
-    <p>Roy</p>
-  </div>
-  <div class="ui inverted blue segment">
-    <p>Bob</p>
-  </div>
-  <div class="ui inverted orange segment">
-    <p>Victor</p>
-  </div>
-  <div class="ui inverted grey segment">
-    <p>Herschel</p>
-  </div>
+  <a ng-href="/toast#?user={{key}}" class="ui segment" style="display:block" ng-repeat="(key, xuser) in users" ng-init="xuser.id = key.user">
+    <p>{{xuser.name}}</p>
+  </a>
 </div>
       </div>
     </div>
